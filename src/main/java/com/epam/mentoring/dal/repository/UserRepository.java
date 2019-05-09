@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.nickname LIKE %:filterWord% OR u.login LIKE %:filterWord% ORDER BY u.login ASC")
-    List<User> findBySearchWord(@Param("filterWord") String filterWord, Pageable pageable);
+    List<User> findByFilterWord(@Param("filterWord") String filterWord, Pageable pageable);
 }

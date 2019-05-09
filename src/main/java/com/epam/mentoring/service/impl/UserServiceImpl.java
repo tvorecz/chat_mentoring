@@ -1,40 +1,45 @@
 package com.epam.mentoring.service.impl;
 
 import com.epam.mentoring.dal.repository.UserRepository;
-import com.epam.mentoring.dto.UserResponseDto;
+import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.dto.UserSearchRequestDto;
-import com.epam.mentoring.entity.User;
+import com.epam.mentoring.dto.UserSearchResponseDto;
 import com.epam.mentoring.service.UserService;
+import com.epam.mentoring.service.handler.Handler;
+import com.epam.mentoring.service.handler.chainbuilder.HandlerChainBuilder;
+import com.epam.mentoring.service.handler.impl.ListUserResponseDtoMapperHandler;
+import com.epam.mentoring.service.handler.impl.SearchUserHandler;
+import com.epam.mentoring.service.handler.impl.UserResponseDtoMapperHandler;
+import com.epam.mentoring.service.handler.impl.ValidatorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+    private Validator validator;
     private UserRepository userRepository;
 
+    private Handler<UserSearchRequestDto, UserSearchResponseDto> findUsersHandler;
+
     @Autowired
-    private Validator validator;
+    public UserServiceImpl(Validator validator, UserRepository userRepository) {
+        this.validator = validator;
+        this.userRepository = userRepository;
+
+        findUsersHandler = HandlerChainBuilder.builder()
+                .startHandler(new ValidatorHandler(this.validator))
+                .nextHandler(new SearchUserHandler(this.userRepository))
+                .nextHandler(new ListUserResponseDtoMapperHandler())
+                .nextHandler(new UserResponseDtoMapperHandler())
+                .build();
+    }
 
     @Override
-    public List<UserResponseDto> find(UserSearchRequestDto userSearchRequestDto) {
-
-        List<User> users = userRepository.findBySearchWord(userSearchRequestDto.getFilterWord(), PageRequest.of(userSearchRequestDto.getPage(), userSearchRequestDto.getAmount()));
-
-        Set<ConstraintViolation<UserSearchRequestDto>> violations = validator.validate(userSearchRequestDto);
-
-        
-        if(users != null) {
-
-        } else {
-            return Collections.emptyList();
-        }
+    public UserSearchResponseDto findUsers(UserSearchRequestDto userSearchRequestDto) {
+        return findUsersHandler.handle(userSearchRequestDto, new ServiceStatusResponseDto());
     }
+
+
 }

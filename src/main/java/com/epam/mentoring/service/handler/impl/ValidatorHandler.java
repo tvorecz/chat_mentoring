@@ -11,6 +11,18 @@ public class ValidatorHandler<RQDTO, RSDTO> implements Handler<RQDTO, RSDTO> {
     private Validator validator;
     private Handler<RQDTO, RSDTO> nextHandler;
 
+    public ValidatorHandler(Validator validator) {
+        this.validator = validator;
+    }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
+
+    @Override
+    public void setNextHandler(Handler nextHandler) {
+        this.nextHandler = nextHandler;
+    }
 
     @Override
     public RSDTO handle(RQDTO req, ServiceStatusResponseDto status) {

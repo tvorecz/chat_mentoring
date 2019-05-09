@@ -1,5 +1,8 @@
 package com.epam.mentoring.dto;
 
+import com.epam.mentoring.service.validator.annotation.ChatExists;
+import com.epam.mentoring.service.validator.annotation.UserExists;
+import com.epam.mentoring.service.validator.annotation.UserInvolvedToChat;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,9 +14,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@UserInvolvedToChat
 public class MessageHistoryRequestDto {
+
+    @UserExists
     private int participantId;
+
+    @ChatExists
     private int chatId;
-    private LocalDateTime fromIncluding;
-    private LocalDateTime tillExcluding;
+
+    private LocalDateTime from;
+    private LocalDateTime till;
 }

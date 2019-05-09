@@ -1,11 +1,9 @@
 package com.epam.mentoring.service;
 
-import com.epam.mentoring.dto.UserResponseDto;
 import com.epam.mentoring.dto.UserSearchRequestDto;
-
-import java.util.List;
+import com.epam.mentoring.dto.UserSearchResponseDto;
 
 public interface UserService {
-    List<UserResponseDto> find(UserSearchRequestDto userSearchRequestDto);
+    UserSearchResponseDto findUsers(UserSearchRequestDto userSearchRequestDto);
 }
 

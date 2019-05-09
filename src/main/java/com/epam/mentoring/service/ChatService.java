@@ -1,14 +1,9 @@
 package com.epam.mentoring.service;
 
-import com.epam.mentoring.dto.ChatRequestDto;
-import com.epam.mentoring.dto.ChatResponseDto;
-
-import java.util.List;
+import com.epam.mentoring.dto.ChatsRequestDto;
+import com.epam.mentoring.dto.ChatsResponseDto;
 
 public interface ChatService {
-    List<ChatResponseDto> getChats(ChatRequestDto chatParams);
+    ChatsResponseDto findAllChatsForUser(ChatsRequestDto chatsRequestDto);
 
-    ChatResponseDto create(ChatRequestDto chatParams);
-
-    ChatResponseDto getChat(ChatRequestDto chatParams);
 }
