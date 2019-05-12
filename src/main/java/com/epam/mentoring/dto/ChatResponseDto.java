@@ -17,7 +17,6 @@ public class ChatResponseDto implements Serializable {
 
     private int id;
     private String title;
-    private UserResponseDto author;
     private List<UserResponseDto> participants;
     private List<MessageResponseDto> history;
 }

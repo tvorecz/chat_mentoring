@@ -1,5 +1,6 @@
-package com.epam.mentoring.dto;
+package com.epam.mentoring.dto.temp;
 
+import com.epam.mentoring.dto.MessageResponseDto;
 import lombok.*;
 
 import java.io.Serializable;

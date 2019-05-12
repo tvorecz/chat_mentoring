@@ -1,4 +1,4 @@
-package com.epam.mentoring.service.handler.impl;
+package com.epam.mentoring.service.handler.impl.mapper.response;
 
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.dto.UserResponseDto;

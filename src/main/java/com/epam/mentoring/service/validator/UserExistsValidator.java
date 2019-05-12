@@ -22,9 +22,7 @@ public class UserExistsValidator implements ConstraintValidator<UserExists, Inte
         if(id > 0) {
             Optional<User> user = repository.findById(id);
 
-            if (user.isPresent()) {
-                return true;
-            }
+            return user.isPresent();
         }
 
         return false;

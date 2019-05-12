@@ -1,4 +1,4 @@
-package com.epam.mentoring.dto;
+package com.epam.mentoring.dto.temp;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.epam.mentoring.service.handler.impl;
+package com.epam.mentoring.service.handler.impl.logic;
 
 import com.epam.mentoring.dal.repository.UserRepository;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;

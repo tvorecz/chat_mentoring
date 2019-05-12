@@ -1,17 +1,19 @@
 package com.epam.mentoring.service.validator.annotation;
 
-import com.epam.mentoring.service.validator.UserInvolvedToChatValidator;
+import com.epam.mentoring.service.validator.LoginNotExistsValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-@Constraint(validatedBy = UserInvolvedToChatValidator.class)
+@Target(ElementType.FIELD)
+@Constraint(validatedBy = LoginNotExistsValidator.class)
 @Documented
-public @interface UserInvolvedToChat {
-    String message() default "User is not participant of the chat";
+public @interface LoginNotExists {
+    String message() default "Login is already used.";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

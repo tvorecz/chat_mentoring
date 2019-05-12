@@ -22,9 +22,7 @@ public class ChatExistsValidator implements ConstraintValidator<ChatExists, Inte
         if(id > 0) {
             Optional<Chat> chat = repository.findById(id);
 
-            if (chat.isPresent()) {
-                return true;
-            }
+            return chat.isPresent();
         }
 
         return false;

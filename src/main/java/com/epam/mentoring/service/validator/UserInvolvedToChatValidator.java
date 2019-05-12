@@ -1,7 +1,7 @@
 package com.epam.mentoring.service.validator;
 
 import com.epam.mentoring.dal.repository.UserChatRepository;
-import com.epam.mentoring.dto.MessageHistoryRequestDto;
+import com.epam.mentoring.dto.temp.MessageHistoryRequestDto;
 import com.epam.mentoring.service.validator.annotation.UserInvolvedToChat;
 import org.springframework.beans.factory.annotation.Autowired;
 
