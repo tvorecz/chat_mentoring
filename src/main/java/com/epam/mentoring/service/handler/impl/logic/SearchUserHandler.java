@@ -31,10 +31,8 @@ public class SearchUserHandler implements Handler<UserSearchRequestDto, UserSear
 
     @Override
     public UserSearchResponseDto handle(UserSearchRequestDto userSearchRequestDto, ServiceStatusResponseDto status) {
-        List<User> users;
-
         if(status.getCode() == 200) {
-            users = userRepository.findByFilterWord(userSearchRequestDto.getFilterWord(), PageRequest.of(userSearchRequestDto.getPage(), userSearchRequestDto.getAmount()));
+            List<User> users = userRepository.findByFilterWord(userSearchRequestDto.getFilterWord(), PageRequest.of(userSearchRequestDto.getPage(), userSearchRequestDto.getAmount()));
 
             if(users != null) {
                 return new UserSearchResponseDto(nextHandler.handle(users, status), status);

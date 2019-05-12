@@ -18,12 +18,17 @@ public class UserRegisterResponseDtoMapperHandler implements Handler<User, UserR
 
     @Override
     public UserRegisterResponseDto handle(User req, ServiceStatusResponseDto status) {
-        Map<String, String> links = new HashMap<>();
-        links.put("login", "/secure/login");
+        if(req != null) {
+            Map<String, String> links = new HashMap<>();
+            links.put("login", "/secure/login");
 
-        return UserRegisterResponseDto.builder()
-                .status(status)
-                .links(links)
-                .build();
+            return UserRegisterResponseDto.builder()
+                    .status(status)
+                    .links(links)
+                    .build();
+        } else {
+            return null;
+        }
+
     }
 }

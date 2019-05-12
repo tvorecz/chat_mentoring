@@ -1,10 +1,7 @@
 package com.epam.mentoring.service.handler.impl.logic;
 
 import com.epam.mentoring.dal.repository.ChatRepository;
-import com.epam.mentoring.dto.ChatResponseDto;
-import com.epam.mentoring.dto.ChatsRequestDto;
-import com.epam.mentoring.dto.ChatsResponseDto;
-import com.epam.mentoring.dto.ServiceStatusResponseDto;
+import com.epam.mentoring.dto.*;
 import com.epam.mentoring.entity.Chat;
 import com.epam.mentoring.service.handler.Handler;
 
@@ -13,7 +10,7 @@ import java.util.List;
 
 public class AllChatsForUserHandler implements Handler<ChatsRequestDto, ChatsResponseDto> {
     private ChatRepository repository;
-    private Handler<List<Chat>, List<ChatResponseDto>> nextHandler;
+    private Handler<List<Chat>, List<ChatInfoDto>> nextHandler;
 
     public AllChatsForUserHandler(ChatRepository repository) {
         this.repository = repository;
@@ -26,10 +23,8 @@ public class AllChatsForUserHandler implements Handler<ChatsRequestDto, ChatsRes
 
     @Override
     public ChatsResponseDto handle(ChatsRequestDto req, ServiceStatusResponseDto status) {
-        List<Chat> chats;
-
         if(status.getCode() == 200) {
-            chats = repository.findAllChatsForUser(req.getUserId());
+            List<Chat> chats = repository.findAllChatsForUser(req.getUserId());
 
             if(chats != null) {
                 return new ChatsResponseDto(nextHandler.handle(chats, status), status);

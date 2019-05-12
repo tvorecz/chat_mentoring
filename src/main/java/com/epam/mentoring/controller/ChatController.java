@@ -1,55 +1,48 @@
 package com.epam.mentoring.controller;
 
 import com.epam.mentoring.dto.*;
-import com.epam.mentoring.dto.temp.ChatRequestDto;
-import com.epam.mentoring.dto.ChatResponseDto;
+import com.epam.mentoring.dto.ChatCreateRequestDto;
+import com.epam.mentoring.dto.ChatInfoResponseDto;
 import com.epam.mentoring.service.ChatService;
 import com.epam.mentoring.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/user/{userId}/chat")
 public class ChatController {
-//    @Autowired
     private ChatService chatService;
-//    @Autowired
-    private MessageService messageService;
 
     @Autowired
-    public ChatController(ChatService chatService, MessageService messageService) {
+    public ChatController(ChatService chatService) {
         this.chatService = chatService;
-        this.messageService = messageService;
     }
 
     @GetMapping
-    @ResponseBody
-    public ResponseEntity<ChatsResponseDto> getAllChatsForUser(ChatsRequestDto chatsRequestDto){
+    public ResponseEntity<ChatsResponseDto> getAllChatsForUser(ChatsRequestDto chatsRequestDto) {
         ChatsResponseDto allChatsForUser = chatService.findAllChatsForUser(chatsRequestDto);
 
         return new ResponseEntity<>(allChatsForUser, HttpStatus.OK);
     }
 
     @PostMapping
-    @ResponseBody
-    public ResponseEntity<ChatResponseDto> createNewChat(@RequestBody ChatRequestDto chatRequestDto){
+    public ResponseEntity<ChatInfoResponseDto> createNewChat(@PathVariable Integer userId,
+                                                             @RequestBody ChatCreateRequestDto chatCreateRequestDto) {
+        chatCreateRequestDto.setUserId(userId);
 
-        return null;
+        ChatInfoResponseDto createdChat = chatService.createNewChat(chatCreateRequestDto);
+
+        return new ResponseEntity<>(createdChat, HttpStatus.OK);
     }
 
     @GetMapping("/{chatId}")
-    @ResponseBody
-    public ResponseEntity<ChatResponseDto> getChatInfo(ChatRequestDto chatRequestDto){
+    public ResponseEntity<ChatInfoResponseDto> getChatInfo(ChatInfoRequestDto chatInfoRequestDto) {
+        ChatInfoResponseDto chatInfoResponseDto = chatService.getChatInfo(chatInfoRequestDto);
 
-        return null;
-    }
-
-    @GetMapping("/{chatId}/message")
-    @ResponseBody
-    public ResponseEntity<ChatResponseDto> getChatInfo(ChatResponseDto chatResponseDto){
-
-        return null;
+        return new ResponseEntity<>(chatInfoResponseDto, HttpStatus.OK);
     }
 }

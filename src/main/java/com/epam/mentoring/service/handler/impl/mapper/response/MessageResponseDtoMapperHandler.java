@@ -17,14 +17,19 @@ public class MessageResponseDtoMapperHandler implements Handler<Message, Message
 
     @Override
     public MessageResponseDto handle(Message req, ServiceStatusResponseDto status) {
-        return MessageResponseDto.builder()
-                .id(req.getId())
-                .author(nextHandler.handle(req.getUser(), status))
-                .chatId(req.getChat()
-                                .getId())
-                .text(req.getText())
-                .dateTimeOfCreating(req.getDateOfCreation())
-                .dateTimeOfEditing(req.getDateOfUpdating())
-                .build();
+        if(req != null) {
+            return MessageResponseDto.builder()
+                    .id(req.getId())
+                    .author(nextHandler.handle(req.getUser(), status))
+                    .chatId(req.getChat()
+                                    .getId())
+                    .text(req.getText())
+                    .dateTimeOfCreating(req.getDateOfCreation())
+                    .dateTimeOfEditing(req.getDateOfUpdating())
+                    .build();
+        } else {
+            return null;
+        }
+
     }
 }

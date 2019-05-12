@@ -17,10 +17,14 @@ public class UserResponseDtoMapperHandler implements Handler<User, UserResponseD
 
     @Override
     public UserResponseDto handle(User entity, ServiceStatusResponseDto status) {
-        return UserResponseDto.builder()
-                .id(entity.getId())
-                .login(entity.getLogin())
-                .nickname(entity.getNickname())
-                .build();
+        if(entity != null) {
+            return UserResponseDto.builder()
+                    .id(entity.getId())
+                    .login(entity.getLogin())
+                    .nickname(entity.getNickname())
+                    .build();
+        } else {
+            return null;
+        }
     }
 }

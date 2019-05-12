@@ -17,12 +17,16 @@ public class ListResponseDtoMapperHandler<E, Dto> implements Handler<List<E>, Li
 
     @Override
     public List<Dto> handle(List<E> entityList, ServiceStatusResponseDto status) {
-        List<Dto> responseList = new ArrayList<>(entityList.size());
+        if (entityList != null) {
+            List<Dto> responseList = new ArrayList<>(entityList.size());
 
-        for (E entity : entityList) {
-            responseList.add(nextHandler.handle(entity, status));
+            for (E entity : entityList) {
+                responseList.add(nextHandler.handle(entity, status));
+            }
+
+            return responseList;
+        } else {
+            return null;
         }
-
-        return responseList;
     }
 }

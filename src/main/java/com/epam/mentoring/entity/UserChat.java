@@ -2,10 +2,7 @@ package com.epam.mentoring.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -24,5 +21,6 @@ public class UserChat implements Serializable {
     private UserChatId userChatId;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRoleInChat role;
 }

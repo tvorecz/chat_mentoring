@@ -15,7 +15,7 @@ import java.util.List;
 public class ChatsResponseDto implements Serializable {
     private static final long serialVersionUID = -4463953008894412867L;
 
-    private List<ChatResponseDto> chats;
+    private List<ChatInfoDto> chats;
     private ServiceStatusResponseDto status;
 
 }

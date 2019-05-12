@@ -14,6 +14,8 @@ import java.io.Serializable;
 public class ServiceStatusResponseDto implements Serializable {
     private static final long serialVersionUID = -5290108680582592467L;
 
-    private int code;
-    private String message;
+    @Builder.Default
+    private int code = 200;
+    @Builder.Default
+    private String message = "Ok.";
 }

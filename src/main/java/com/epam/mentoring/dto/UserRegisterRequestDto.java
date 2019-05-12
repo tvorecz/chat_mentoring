@@ -3,6 +3,7 @@ package com.epam.mentoring.dto;
 import com.epam.mentoring.service.validator.annotation.LoginNotExists;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -18,11 +19,14 @@ public class UserRegisterRequestDto implements Serializable {
 
     @NotNull
     @LoginNotExists
+    @NotEmpty
     private String login;
 
     @NotNull
+    @NotEmpty
     private String password;
 
     @NotNull
+    @NotEmpty
     private String nickname;
 }

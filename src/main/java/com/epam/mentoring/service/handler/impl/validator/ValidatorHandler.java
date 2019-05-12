@@ -28,10 +28,7 @@ public class ValidatorHandler<RQDTO, RSDTO> implements Handler<RQDTO, RSDTO> {
     public RSDTO handle(RQDTO req, ServiceStatusResponseDto status) {
         Set<ConstraintViolation<RQDTO>> violations = validator.validate(req);
 
-        if (violations.isEmpty()) {
-            status.setCode(200);
-            status.setMessage("Ok.");
-        } else {
+        if (!violations.isEmpty()) {
             status.setCode(400);
             status.setMessage(createMessage(violations));
         }
