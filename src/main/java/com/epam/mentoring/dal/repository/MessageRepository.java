@@ -5,20 +5,34 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 public interface MessageRepository extends CrudRepository<Message, Integer> {
-    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.chat.id = :chatId")
-    List<Message> findMessagesInChatFromDate(@Param("fromDate") LocalDate fromDate, @Param("chatId") Integer chatId);
+    @Query("select message from Message message where message.id = :messageId")
+    Message getCreatedMessage(@Param("messageId") Integer messageId);
 
-    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.dateOfCreation <= :tillDate AND message.chat.id = :chatId")
-    List<Message> findMessegesInChatBetweenDates(@Param("fromDate") LocalDate fromDate, @Param("tillDate") LocalDate tillDate, @Param("chatId") Integer chatId);
+    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.chat.id = " +
+           ":chatId order by message.dateOfCreation")
+    List<Message> getChatHistoryFromDate(@Param("chatId") Integer chatId, @Param("fromDate") LocalDateTime fromDate);
 
-    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.chat.id = :chatId AND message.user.id = :userId")
-    List<Message> findUserMessagesInChatFromDate(@Param("fromDate") LocalDate fromDate, @Param("chatId") Integer chatId, @Param("userId") Integer userID);
+    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.dateOfCreation " +
+           "< :tillDate AND message.chat.id = :chatId  order by message.dateOfCreation")
+    List<Message> getChatHistoryBetweenDates(@Param("chatId") Integer chatId,
+                                             @Param("fromDate") LocalDateTime fromDate,
+                                             @Param("tillDate") LocalDateTime tillDate);
 
-    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.dateOfCreation <= :tillDate AND message.chat.id = :chatId AND message.user.id = :userId")
-    List<Message> findUserMessegesInChatBetweenDates(@Param("fromDate") LocalDate fromDate, @Param("tillDate") LocalDate tillDate, @Param("chatId") Integer chatId, @Param("userId") Integer userID);
+    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.chat.id = " +
+           ":chatId AND message.user.id = :userId  order by message.dateOfCreation")
+    List<Message> getChatHistoryFromDateForUser(@Param("chatId") Integer chatId,
+                                                @Param("userId") Integer userId,
+                                                @Param("fromDate") LocalDateTime fromDate);
+
+    @Query("SELECT message FROM Message message WHERE message.dateOfCreation >= :fromDate AND message.dateOfCreation " +
+           "< :tillDate AND message.chat.id = :chatId AND message.user.id = :userId order by message.dateOfCreation")
+    List<Message> getChatHistoryBetweenDatesForUser(@Param("chatId") Integer chatId,
+                                                    @Param("userId") Integer userId,
+                                                    @Param("fromDate") LocalDateTime fromDate,
+                                                    @Param("tillDate") LocalDateTime tillDate);
 }

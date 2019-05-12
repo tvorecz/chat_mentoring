@@ -17,7 +17,7 @@ public class MessageResponseDtoMapperHandler implements Handler<Message, Message
 
     @Override
     public MessageResponseDto handle(Message req, ServiceStatusResponseDto status) {
-        if(req != null) {
+        if (req != null) {
             return MessageResponseDto.builder()
                     .id(req.getId())
                     .author(nextHandler.handle(req.getUser(), status))
@@ -27,9 +27,9 @@ public class MessageResponseDtoMapperHandler implements Handler<Message, Message
                     .dateTimeOfCreating(req.getDateOfCreation())
                     .dateTimeOfEditing(req.getDateOfUpdating())
                     .build();
-        } else {
-            return null;
         }
 
+        return MessageResponseDto.builder()
+                .build();
     }
 }

@@ -1,6 +1,7 @@
-package com.epam.mentoring.dto.temp;
+package com.epam.mentoring.dto;
 
 import com.epam.mentoring.service.validator.annotation.ChatExists;
+import com.epam.mentoring.service.validator.annotation.CorrectPairOfDates;
 import com.epam.mentoring.service.validator.annotation.UserExists;
 import com.epam.mentoring.service.validator.annotation.UserInvolvedToChat;
 import lombok.*;
@@ -15,14 +16,15 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @UserInvolvedToChat
-public class MessageHistoryRequestDto {
-
+@CorrectPairOfDates
+public class MessageHistoryRequestDto implements UserInvolvedToChatDto {
     @UserExists
-    private int participantId;
+    private int userId;
 
     @ChatExists
     private int chatId;
 
     private LocalDateTime from;
+
     private LocalDateTime till;
 }

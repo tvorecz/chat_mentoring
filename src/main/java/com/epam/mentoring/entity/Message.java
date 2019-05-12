@@ -1,6 +1,7 @@
 package com.epam.mentoring.entity;
 
 import lombok.*;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
 import java.io.Serializable;

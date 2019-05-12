@@ -20,19 +20,25 @@ public class ChatCreateRequestDtoMapperHandler implements Handler<ChatCreateRequ
 
     @Override
     public ChatInfoResponseDto handle(ChatCreateRequestDto req, ServiceStatusResponseDto status) {
-        List<User> partisipants = new ArrayList<>();
+        if (req != null && status.getCode() == 200) {
+            List<User> partisipants = new ArrayList<>();
 
-        for (Integer userId : req.getParticipantsIds()) {
-            partisipants.add(User.builder()
-                                     .id(userId)
-                                     .build());
+            for (Integer userId : req.getParticipantsIds()) {
+                partisipants.add(User.builder()
+                                         .id(userId)
+                                         .build());
+            }
+
+            Chat notSavedChat = Chat.builder()
+                    .title(req.getTitle())
+                    .users(partisipants)
+                    .build();
+
+            return nextHandler.handle(notSavedChat, status);
         }
 
-        Chat notSavedChat = Chat.builder()
-                .title(req.getTitle())
-                .users(partisipants)
+        return ChatInfoResponseDto.builder()
+                .status(status)
                 .build();
-
-        return nextHandler.handle(notSavedChat, status);
     }
 }

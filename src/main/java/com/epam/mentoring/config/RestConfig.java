@@ -17,11 +17,6 @@ public class RestConfig extends SpringBootServletInitializer {
 
 
     public static void main(String[] args) {
-        SpringApplication.run(RestConfig.class, args);
+        SpringApplication.run(new Class[]{RestConfig.class}, args);
     }
-
-    //    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        return builder.sources(RestConfig.class);
-//    }
 }
