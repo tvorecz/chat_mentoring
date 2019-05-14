@@ -1,5 +1,6 @@
 package com.epam.mentoring.service.impl;
 
+import com.epam.mentoring.dal.repository.RepositoryStorage;
 import com.epam.mentoring.dal.repository.UserRepository;
 import com.epam.mentoring.dto.*;
 import com.epam.mentoring.entity.User;
@@ -24,30 +25,26 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private Validator validator;
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private RepositoryStorage repositoryStorage;
 
     private Handler<UserSearchRequestDto, UserSearchResponseDto> findUsersHandler;
     private Handler<UserRegisterRequestDto, UserRegisterResponseDto> registerHandler;
 
     @Autowired
-    public UserServiceImpl(Validator validator, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.validator = validator;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public UserServiceImpl(Validator validator, RepositoryStorage repositoryStorage, PasswordEncoder passwordEncoder) {
+        this.repositoryStorage = repositoryStorage;
 
         findUsersHandler = HandlerChainBuilder.builder()
-                .startHandler(new ValidatorHandler(this.validator))
-                .nextHandler(new SearchUserHandler(this.userRepository))
+                .startHandler(new ValidatorHandler(validator))
+                .nextHandler(new SearchUserHandler(repositoryStorage.getUserRepository()))
                 .nextHandler(new ListResponseDtoMapperHandler<User, UserResponseDto>())
                 .nextHandler(new UserResponseDtoMapperHandler())
                 .build();
 
         registerHandler = HandlerChainBuilder.builder()
-                .startHandler(new ValidatorHandler(this.validator))
+                .startHandler(new ValidatorHandler(validator))
                 .nextHandler(new UserRegisterRequestDtoMapper(passwordEncoder))
-                .nextHandler(new UserRegisterHandler(this.userRepository))
+                .nextHandler(new UserRegisterHandler(repositoryStorage.getUserRepository()))
                 .nextHandler(new UserRegisterResponseDtoMapperHandler())
                 .build();
     }
@@ -64,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByLogin(login);
+        Optional<User> user = repositoryStorage.getUserRepository().findByLogin(login);
 
         return user.orElseThrow(() -> new UsernameNotFoundException("User is not exists"));
     }

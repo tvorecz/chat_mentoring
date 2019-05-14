@@ -3,7 +3,7 @@ package com.epam.mentoring.service.handler.impl.logic;
 import com.epam.mentoring.dal.repository.MessageRepository;
 import com.epam.mentoring.dto.MessageHistoryRequestDto;
 import com.epam.mentoring.dto.MessageHistoryResponseDto;
-import com.epam.mentoring.dto.MessageResponseDto;
+import com.epam.mentoring.dto.MessageDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.entity.Message;
 import com.epam.mentoring.service.handler.Handler;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GetChatHistoryHandler implements Handler<MessageHistoryRequestDto, MessageHistoryResponseDto> {
     private MessageRepository repository;
-    private Handler<List<Message>, List<MessageResponseDto>> nextHandler;
+    private Handler<List<Message>, List<MessageDto>> nextHandler;
 
     public GetChatHistoryHandler(MessageRepository repository) {
         this.repository = repository;

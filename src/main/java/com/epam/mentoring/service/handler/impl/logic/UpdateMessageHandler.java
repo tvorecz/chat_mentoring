@@ -1,17 +1,17 @@
 package com.epam.mentoring.service.handler.impl.logic;
 
 import com.epam.mentoring.dal.repository.MessageRepository;
-import com.epam.mentoring.dto.MessageResponseDto;
 import com.epam.mentoring.dto.MessageDto;
-import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.entity.Message;
+import com.epam.mentoring.dto.MessageResponseDto;
+import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.service.handler.Handler;
 
-public class CreateMessageHandler implements Handler<Message, MessageResponseDto> {
+public class UpdateMessageHandler implements Handler<Message, MessageResponseDto> {
     private MessageRepository repository;
     private Handler<Message, MessageDto> nextHandler;
 
-    public CreateMessageHandler(MessageRepository repository) {
+    public UpdateMessageHandler(MessageRepository repository) {
         this.repository = repository;
     }
 
@@ -21,12 +21,12 @@ public class CreateMessageHandler implements Handler<Message, MessageResponseDto
     }
 
     @Override
-    public MessageResponseDto handle(Message notSavedMessage, ServiceStatusResponseDto status) {
-        if (status.getCode() == 200 && notSavedMessage != null) {
-            Message savedMessage = repository.save(notSavedMessage);
+    public MessageResponseDto handle(Message notUpdatedMessage, ServiceStatusResponseDto status) {
+        if (status.getCode() == 200 && notUpdatedMessage != null) {
+            Message updatedMessage = repository.save(notUpdatedMessage);
 
             return MessageResponseDto.builder()
-                    .message(nextHandler.handle(savedMessage, status))
+                    .message(nextHandler.handle(updatedMessage, status))
                     .status(status)
                     .build();
         }

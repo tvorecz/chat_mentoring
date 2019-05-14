@@ -18,6 +18,6 @@ public class ChatInfoResponseDto implements Serializable {
     private int id;
     private String title;
     private List<UserResponseDto> participants;
-    private List<MessageResponseDto> lastHistory;
+    private List<MessageDto> lastHistory;
     private ServiceStatusResponseDto status;
 }

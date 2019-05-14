@@ -5,6 +5,7 @@ import com.epam.mentoring.service.validator.annotation.UsersExist;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -19,5 +20,6 @@ public class ChatCreateRequestDto {
     @NotNull
     private String title;
     @UsersExist
+    @NotNull
     private Integer[] participantsIds;
 }

@@ -1,7 +1,7 @@
 package com.epam.mentoring.service.handler.impl.mapper.response;
 
 import com.epam.mentoring.dto.ChatInfoResponseDto;
-import com.epam.mentoring.dto.MessageResponseDto;
+import com.epam.mentoring.dto.MessageDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.dto.UserResponseDto;
 import com.epam.mentoring.entity.Chat;
@@ -14,10 +14,10 @@ import java.util.List;
 public class ChatInfoResponseDtoMapperHandler implements Handler<Chat, ChatInfoResponseDto> {
     private Handler nextHandler;
     private Handler<List<User>, List<UserResponseDto>> listUserResponseDtoHandler;
-    private Handler<List<Message>, List<MessageResponseDto>> listMessageResponseDtoHandler;
+    private Handler<List<Message>, List<MessageDto>> listMessageResponseDtoHandler;
 
     public ChatInfoResponseDtoMapperHandler(Handler<List<User>, List<UserResponseDto>> listUserResponseDtoHandler,
-                                            Handler<List<Message>, List<MessageResponseDto>> listMessageResponseDtoHandler) {
+                                            Handler<List<Message>, List<MessageDto>> listMessageResponseDtoHandler) {
         this.listUserResponseDtoHandler = listUserResponseDtoHandler;
         this.listMessageResponseDtoHandler = listMessageResponseDtoHandler;
     }

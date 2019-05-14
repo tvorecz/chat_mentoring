@@ -1,10 +1,8 @@
 package com.epam.mentoring.dto;
 
-import com.epam.mentoring.dto.UserResponseDto;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -14,12 +12,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 public class MessageResponseDto implements Serializable {
-    private static final long serialVersionUID = 5102871638699161083L;
+    private static final long serialVersionUID = 255354544789265990L;
 
-    private int id;
-    private int chatId;
-    private UserResponseDto author;
-    private String text;
-    private LocalDateTime dateTimeOfCreating;
-    private LocalDateTime dateTimeOfEditing;
+    private MessageDto message;
+    private ServiceStatusResponseDto status;
 }

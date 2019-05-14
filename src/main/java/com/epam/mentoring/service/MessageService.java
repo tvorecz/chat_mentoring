@@ -1,12 +1,13 @@
 package com.epam.mentoring.service;
 
-import com.epam.mentoring.dto.MessageCreateRequestDto;
-import com.epam.mentoring.dto.MessageCreateResponseDto;
-import com.epam.mentoring.dto.MessageHistoryRequestDto;
-import com.epam.mentoring.dto.MessageHistoryResponseDto;
+import com.epam.mentoring.dto.*;
 
 public interface MessageService {
     MessageHistoryResponseDto getChatHistory(MessageHistoryRequestDto messageHistoryRequestDto);
 
-    MessageCreateResponseDto createMessage(MessageCreateRequestDto messageCreateRequestDto);
+    MessageResponseDto createMessage(MessageCreateRequestDto messageCreateRequestDto);
+
+    MessageResponseDto updateMessage(MessageUpdateRequestDto messageUpdateRequestDto);
+
+    ServiceStatusResponseDto deleteMessage(MessageDeleteRequestDto messageDeleteRequestDto);
 }

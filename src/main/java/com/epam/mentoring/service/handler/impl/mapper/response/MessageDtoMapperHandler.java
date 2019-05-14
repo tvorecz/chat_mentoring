@@ -2,12 +2,12 @@ package com.epam.mentoring.service.handler.impl.mapper.response;
 
 import com.epam.mentoring.dto.UserResponseDto;
 import com.epam.mentoring.entity.Message;
-import com.epam.mentoring.dto.MessageResponseDto;
+import com.epam.mentoring.dto.MessageDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.entity.User;
 import com.epam.mentoring.service.handler.Handler;
 
-public class MessageResponseDtoMapperHandler implements Handler<Message, MessageResponseDto> {
+public class MessageDtoMapperHandler implements Handler<Message, MessageDto> {
     private Handler<User, UserResponseDto> nextHandler;
 
     @Override
@@ -16,9 +16,9 @@ public class MessageResponseDtoMapperHandler implements Handler<Message, Message
     }
 
     @Override
-    public MessageResponseDto handle(Message req, ServiceStatusResponseDto status) {
+    public MessageDto handle(Message req, ServiceStatusResponseDto status) {
         if (req != null) {
-            return MessageResponseDto.builder()
+            return MessageDto.builder()
                     .id(req.getId())
                     .author(nextHandler.handle(req.getUser(), status))
                     .chatId(req.getChat()
@@ -29,7 +29,7 @@ public class MessageResponseDtoMapperHandler implements Handler<Message, Message
                     .build();
         }
 
-        return MessageResponseDto.builder()
+        return MessageDto.builder()
                 .build();
     }
 }

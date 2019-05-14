@@ -1,6 +1,6 @@
 package com.epam.mentoring.service.impl;
 
-import com.epam.mentoring.dal.repository.ChatRepository;
+import com.epam.mentoring.dal.repository.RepositoryStorage;
 import com.epam.mentoring.dto.*;
 import com.epam.mentoring.entity.Chat;
 import com.epam.mentoring.entity.Message;
@@ -23,21 +23,19 @@ import javax.validation.Validator;
 @Service
 @Transactional
 public class ChatServiceImpl implements ChatService {
-    private Validator validator;
-    private ChatRepository repository;
+    private RepositoryStorage repositoryStorage;
 
     private Handler<ChatsRequestDto, ChatsResponseDto> findAllChatsForUserHandler;
     private Handler<ChatInfoRequestDto, ChatInfoResponseDto> getChatInfoHandler;
     private Handler<ChatCreateRequestDto, ChatInfoResponseDto> createNewChatHandler;
 
     @Autowired
-    public ChatServiceImpl(Validator validator, ChatRepository repository) {
-        this.validator = validator;
-        this.repository = repository;
+    public ChatServiceImpl(Validator validator, RepositoryStorage repositoryStorage) {
+        this.repositoryStorage = repositoryStorage;
 
         findAllChatsForUserHandler = HandlerChainBuilder.builder()
                 .startHandler(new ValidatorHandler(validator))
-                .nextHandler(new AllChatsForUserHandler(repository))
+                .nextHandler(new AllChatsForUserHandler(repositoryStorage.getChatRepository()))
                 .nextHandler(new ListResponseDtoMapperHandler<Chat, ChatInfoResponseDto>())
                 .nextHandler(new ChatInfoDtoMapperHandler())
                 .nextHandler(new ListResponseDtoMapperHandler<User, UserResponseDto>())
@@ -47,16 +45,16 @@ public class ChatServiceImpl implements ChatService {
 
         getChatInfoHandler = HandlerChainBuilder.builder()
                 .startHandler(new ValidatorHandler(validator))
-                .nextHandler(new GetChatInfoHandler(repository))
+                .nextHandler(new GetChatInfoHandler(repositoryStorage.getChatRepository()))
                 .nextHandler(new ChatInfoResponseDtoMapperHandler(
                         HandlerChainBuilder.builder()
                                 .startHandler(new ListResponseDtoMapperHandler<User, UserResponseDto>())
                                 .nextHandler(new UserResponseDtoMapperHandler())
                                 .build(),
                         HandlerChainBuilder.builder()
-                                .startHandler(new ListResponseDtoMapperHandler<Message, MessageResponseDto>())
+                                .startHandler(new ListResponseDtoMapperHandler<Message, MessageDto>())
                                 .nextHandler(HandlerChainBuilder.builder()
-                                                     .startHandler(new MessageResponseDtoMapperHandler())
+                                                     .startHandler(new MessageDtoMapperHandler())
                                                      .nextHandler(new UserResponseDtoMapperHandler())
                                                      .build())
                                 .build()))
@@ -64,17 +62,17 @@ public class ChatServiceImpl implements ChatService {
 
         createNewChatHandler = HandlerChainBuilder.builder()
                 .startHandler(new ValidatorHandler(validator))
-                .nextHandler(new ChatCreateRequestDtoMapperHandler())
-                .nextHandler(new CreateNewChatHandler(repository))
+                .nextHandler(new ChatCreateRequestDtoMapperHandler(repositoryStorage))
+                .nextHandler(new CreateNewChatHandler(repositoryStorage.getChatRepository()))
                 .nextHandler(new ChatInfoResponseDtoMapperHandler(
                         HandlerChainBuilder.builder()
                                 .startHandler(new ListResponseDtoMapperHandler<User, UserResponseDto>())
                                 .nextHandler(new UserResponseDtoMapperHandler())
                                 .build(),
                         HandlerChainBuilder.builder()
-                                .startHandler(new ListResponseDtoMapperHandler<Message, MessageResponseDto>())
+                                .startHandler(new ListResponseDtoMapperHandler<Message, MessageDto>())
                                 .nextHandler(HandlerChainBuilder.builder()
-                                                     .startHandler(new MessageResponseDtoMapperHandler())
+                                                     .startHandler(new MessageDtoMapperHandler())
                                                      .nextHandler(new UserResponseDtoMapperHandler())
                                                      .build())
                                 .build()))

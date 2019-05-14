@@ -1,9 +1,6 @@
 package com.epam.mentoring.controller;
 
-import com.epam.mentoring.dto.MessageCreateRequestDto;
-import com.epam.mentoring.dto.MessageCreateResponseDto;
-import com.epam.mentoring.dto.MessageHistoryRequestDto;
-import com.epam.mentoring.dto.MessageHistoryResponseDto;
+import com.epam.mentoring.dto.*;
 import com.epam.mentoring.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,14 +25,44 @@ public class MessageController {
     }
 
     @PostMapping
-    public ResponseEntity<MessageCreateResponseDto> createMessage(@PathVariable("userId") Integer userId,
-                                                                  @PathVariable("chatId") Integer chatId,
-                                                                  @RequestBody MessageCreateRequestDto messageCreateRequestDto) {
+    public ResponseEntity<MessageResponseDto> createMessage(@PathVariable("userId") Integer userId,
+                                                            @PathVariable("chatId") Integer chatId,
+                                                            @RequestBody MessageCreateRequestDto messageCreateRequestDto) {
         messageCreateRequestDto.setChatId(chatId);
         messageCreateRequestDto.setUserId(userId);
 
-        MessageCreateResponseDto messageCreateResponseDto = messageService.createMessage(messageCreateRequestDto);
+        MessageResponseDto messageResponseDto = messageService.createMessage(messageCreateRequestDto);
 
-        return new ResponseEntity<>(messageCreateResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(messageResponseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{messageId}")
+    public ResponseEntity<MessageResponseDto> updateMessage(@PathVariable("userId") Integer userId,
+                                                            @PathVariable("chatId") Integer chatId,
+                                                            @PathVariable("messageId") Integer messageId,
+                                                            @RequestBody MessageUpdateRequestDto messageUpdateRequestDto) {
+        messageUpdateRequestDto.setChatId(chatId);
+        messageUpdateRequestDto.setUserId(userId);
+        messageUpdateRequestDto.setMessageId(messageId);
+
+        MessageResponseDto messageResponseDto = messageService.updateMessage(messageUpdateRequestDto);
+
+        return new ResponseEntity<>(messageResponseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{messageId}")
+    public ResponseEntity<ServiceStatusResponseDto> deleteMessage(@PathVariable("userId") Integer userId,
+                                                                  @PathVariable("chatId") Integer chatId,
+                                                                  @PathVariable("messageId") Integer messageId) {
+        MessageDeleteRequestDto messageDeleteRequestDto = MessageDeleteRequestDto.builder()
+                .messageId(messageId)
+                .chatId(chatId)
+                .userId(userId)
+                .build();
+
+        ServiceStatusResponseDto serviceStatusResponseDto = messageService.deleteMessage(messageDeleteRequestDto);
+
+
+        return new ResponseEntity<>(serviceStatusResponseDto, HttpStatus.OK);
     }
 }
