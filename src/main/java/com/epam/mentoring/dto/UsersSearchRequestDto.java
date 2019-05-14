@@ -1,9 +1,11 @@
 package com.epam.mentoring.dto;
 
+import com.epam.mentoring.service.validator.annotation.PageAndAmoutOfItemsIsCorrect;
 import com.epam.mentoring.service.validator.annotation.UserExists;
 import lombok.*;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -13,17 +15,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class UserSearchRequestDto implements Serializable {
+@PageAndAmoutOfItemsIsCorrect
+public class UsersSearchRequestDto implements Serializable {
     private static final long serialVersionUID = 8064746371843819993L;
 
-    @UserExists
-    private int userId;
+    private String filterWord;
 
-    private String filterWord = "";
+    private Integer amount;
 
-    @Min(message = "Amount must be more than 0.", value = 1)
-    private int amount;
-
-    @Min(message = "Page number must be more than 0.", value = 1)
-    private int page;
+    private Integer page;
 }

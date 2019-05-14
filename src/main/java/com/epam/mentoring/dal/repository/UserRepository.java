@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.nickname LIKE %:filterWord% OR u.login LIKE %:filterWord% ORDER BY u.login ASC")
     List<User> findByFilterWord(@Param("filterWord") String filterWord, Pageable pageable);
+    @Query("SELECT u FROM User u WHERE u.nickname LIKE %:filterWord% OR u.login LIKE %:filterWord% ORDER BY u.login ASC")
+    List<User> findByFilterWord(@Param("filterWord") String filterWord);
 
     Optional<User> findByLogin(String login);
 }

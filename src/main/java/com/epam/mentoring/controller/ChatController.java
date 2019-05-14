@@ -12,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
-@RequestMapping("/user/{userId}/chat")
+@RequestMapping("/chat")
 public class ChatController {
     private ChatService chatService;
 
@@ -23,16 +25,19 @@ public class ChatController {
     }
 
     @GetMapping
-    public ResponseEntity<ChatsResponseDto> getAllChatsForUser(ChatsRequestDto chatsRequestDto) {
+    public ResponseEntity<ChatsResponseDto> getAllChatsForUser(HttpServletRequest request,
+                                                               ChatsRequestDto chatsRequestDto) {
+        chatsRequestDto.setUserId((Integer) request.getAttribute("userId"));
+
         ChatsResponseDto allChatsForUser = chatService.findAllChatsForUser(chatsRequestDto);
 
         return new ResponseEntity<>(allChatsForUser, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ChatInfoResponseDto> createNewChat(@PathVariable Integer userId,
+    public ResponseEntity<ChatInfoResponseDto> createNewChat(HttpServletRequest request,
                                                              @RequestBody ChatCreateRequestDto chatCreateRequestDto) {
-        chatCreateRequestDto.setUserId(userId);
+        chatCreateRequestDto.setUserId((Integer) request.getAttribute("userId"));
 
         ChatInfoResponseDto createdChat = chatService.createNewChat(chatCreateRequestDto);
 
@@ -40,7 +45,10 @@ public class ChatController {
     }
 
     @GetMapping("/{chatId}")
-    public ResponseEntity<ChatInfoResponseDto> getChatInfo(ChatInfoRequestDto chatInfoRequestDto) {
+    public ResponseEntity<ChatInfoResponseDto> getChatInfo(HttpServletRequest request,
+                                                           ChatInfoRequestDto chatInfoRequestDto) {
+        chatInfoRequestDto.setUserId((Integer) request.getAttribute("userId"));
+
         ChatInfoResponseDto chatInfoResponseDto = chatService.getChatInfo(chatInfoRequestDto);
 
         return new ResponseEntity<>(chatInfoResponseDto, HttpStatus.OK);

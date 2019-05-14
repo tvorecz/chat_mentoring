@@ -1,7 +1,6 @@
 package com.epam.mentoring.service.impl;
 
 import com.epam.mentoring.dal.repository.RepositoryStorage;
-import com.epam.mentoring.dal.repository.UserRepository;
 import com.epam.mentoring.dto.*;
 import com.epam.mentoring.entity.User;
 import com.epam.mentoring.service.UserService;
@@ -27,7 +26,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private RepositoryStorage repositoryStorage;
 
-    private Handler<UserSearchRequestDto, UserSearchResponseDto> findUsersHandler;
+    private Handler<UsersSearchRequestDto, UsersSearchResponseDto> findUsersHandler;
     private Handler<UserRegisterRequestDto, UserRegisterResponseDto> registerHandler;
 
     @Autowired
@@ -55,8 +54,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserSearchResponseDto findUsers(UserSearchRequestDto userSearchRequestDto) {
-        return findUsersHandler.handle(userSearchRequestDto, new ServiceStatusResponseDto());
+    public UsersSearchResponseDto findUsers(UsersSearchRequestDto usersSearchRequestDto) {
+        return findUsersHandler.handle(usersSearchRequestDto, new ServiceStatusResponseDto());
     }
 
     @Override

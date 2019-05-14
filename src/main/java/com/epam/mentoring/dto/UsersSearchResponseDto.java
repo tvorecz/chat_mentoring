@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class UserSearchResponseDto implements Serializable {
+public class UsersSearchResponseDto implements Serializable {
     private static final long serialVersionUID = -4475960023692183366L;
 
     private List<UserResponseDto> users;
