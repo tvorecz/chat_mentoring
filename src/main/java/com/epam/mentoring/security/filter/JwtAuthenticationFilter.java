@@ -1,7 +1,9 @@
 package com.epam.mentoring.security.filter;
 
+import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.entity.User;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
+import com.epam.mentoring.security.ResponseStatusWriter;
 import com.epam.mentoring.security.SecurityDefinition;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +22,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthenticationManager authenticationManager;
     private JwtTokenHeaderBuilder jwtTokenHeaderBuilder;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenHeaderBuilder jwtTokenHeaderBuilder) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   JwtTokenHeaderBuilder jwtTokenHeaderBuilder) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenHeaderBuilder = jwtTokenHeaderBuilder;
 
@@ -34,7 +37,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login,
+                                                                                                          password);
 
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -49,12 +53,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String tokenBody = jwtTokenHeaderBuilder.createTokenHeaderForResponse(user);
 
         response.addHeader(TOKEN_HEADER, tokenBody);
+
+        ResponseStatusWriter.writeStatusResponse(response,
+                            ServiceStatusResponseDto.builder()
+                                    .code(200)
+                                    .message("Ok.")
+                                    .build());
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        ResponseStatusWriter.writeStatusResponse(response,
+                            ServiceStatusResponseDto.builder()
+                                    .code(401)
+                                    .message("Access denied.")
+                                    .build());
     }
+
+
 }

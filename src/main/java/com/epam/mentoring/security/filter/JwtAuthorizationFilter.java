@@ -1,8 +1,14 @@
 package com.epam.mentoring.security.filter;
 
+import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.security.IdUsernamePasswordAuthenticationToken;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
+import com.epam.mentoring.security.ResponseStatusWriter;
 import com.epam.mentoring.security.SecurityDefinition;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -31,17 +37,39 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter implements
 
         if (StringUtils.isEmpty(header) || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(request, response);
+
             return;
         }
 
         IdUsernamePasswordAuthenticationToken authentication =
-                jwtTokenHeaderBuilder.createTokenForAuthorization(header);
+                null;
 
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
+        try {
+            authentication = jwtTokenHeaderBuilder.createTokenForAuthorization(header);
 
-        request.setAttribute("userId", authentication.getPrincipalId());
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
 
-        chain.doFilter(request, response);
+            request.setAttribute("userId", authentication.getPrincipalId());
+
+            chain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            writeExceptionResponse(response, 401, "Token are expired.");
+        } catch (UnsupportedJwtException e) {
+            writeExceptionResponse(response, 401, "Token are invalid.");
+        } catch (MalformedJwtException e) {
+            writeExceptionResponse(response, 401, "Token are incorrect.");
+        } catch (SignatureException e) {
+            writeExceptionResponse(response, 401, "Signature are incorrect.");
+        } catch (IllegalArgumentException e) {
+            writeExceptionResponse(response, 401, "Incorrect information.");
+        }
+    }
+
+    private void writeExceptionResponse(HttpServletResponse response, int code, String message) throws IOException {
+        ResponseStatusWriter.writeStatusResponse(response, ServiceStatusResponseDto.builder()
+                .code(code)
+                .message(message)
+                .build());
     }
 }

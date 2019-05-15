@@ -1,5 +1,6 @@
 package com.epam.mentoring.config;
 
+import com.epam.mentoring.security.AuthenticationExceptionHandler;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
 import com.epam.mentoring.security.filter.JwtAuthenticationFilter;
 import com.epam.mentoring.security.filter.JwtAuthorizationFilter;
@@ -34,6 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtTokenHeaderBuilder();
     }
 
+    @Bean
+    public AuthenticationExceptionHandler authenticationExceptionHandler() {
+        return new AuthenticationExceptionHandler();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -53,6 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationExceptionHandler());
     }
 }

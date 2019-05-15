@@ -3,7 +3,6 @@ package com.epam.mentoring.controller;
 import com.epam.mentoring.dto.*;
 import com.epam.mentoring.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ public class MessageController {
     @GetMapping
     public ResponseEntity<MessageHistoryResponseDto> getChatHistory(HttpServletRequest request,
                                                                     MessageHistoryRequestDto messageHistoryRequestDto) {
-        messageHistoryRequestDto.setChatId((Integer) request.getAttribute("userId"));
+        messageHistoryRequestDto.setUserId((Integer) request.getAttribute("userId"));
 
         MessageHistoryResponseDto messageHistoryResponseDto = messageService.getChatHistory(messageHistoryRequestDto);
 

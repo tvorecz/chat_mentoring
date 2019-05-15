@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@Import({ServiceConfig.class, SecurityConfig.class})
+@Import({SecurityConfig.class, SwaggerConfig.class})
 @ComponentScan("com.epam.mentoring")
 @EntityScan("com.epam.mentoring.entity")
 @EnableJpaRepositories(basePackages = "com.epam.mentoring.dal.repository")
