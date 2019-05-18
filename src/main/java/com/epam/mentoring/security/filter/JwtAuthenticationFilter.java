@@ -1,6 +1,7 @@
 package com.epam.mentoring.security.filter;
 
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
+import com.epam.mentoring.dto.StatusResponseDto;
 import com.epam.mentoring.entity.User;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
 import com.epam.mentoring.security.ResponseStatusWriter;
@@ -53,23 +54,34 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String tokenBody = jwtTokenHeaderBuilder.createTokenHeaderForResponse(user);
 
         response.addHeader(TOKEN_HEADER, tokenBody);
+//        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+        response.addHeader("Access-Control-Expose-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+//        response.addHeader("Access-Control-Allow-Credentials", "true");
 
         ResponseStatusWriter.writeStatusResponse(response,
-                            ServiceStatusResponseDto.builder()
-                                    .code(200)
-                                    .message("Ok.")
-                                    .build());
+                                                 StatusResponseDto.builder()
+                                                         .status(ServiceStatusResponseDto.builder()
+                                                                         .code(200)
+                                                                         .message("Ok.")
+                                                                         .build()).build());
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request,
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
+//        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+        response.addHeader("Access-Control-Expose-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+//        response.addHeader("Access-Control-Allow-Credentials", "true");
+
         ResponseStatusWriter.writeStatusResponse(response,
-                            ServiceStatusResponseDto.builder()
+                                                 StatusResponseDto.builder()
+                                                         .status(ServiceStatusResponseDto.builder()
                                     .code(401)
                                     .message("Access denied.")
-                                    .build());
+                                    .build()).build());
     }
 
 

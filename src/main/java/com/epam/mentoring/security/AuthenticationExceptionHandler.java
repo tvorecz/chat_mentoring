@@ -1,6 +1,7 @@
 package com.epam.mentoring.security;
 
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
+import com.epam.mentoring.dto.StatusResponseDto;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -15,9 +16,12 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest httpServletRequest,
                          HttpServletResponse httpServletResponse,
                          AuthenticationException e) throws IOException, ServletException {
-        ResponseStatusWriter.writeStatusResponse(httpServletResponse, ServiceStatusResponseDto.builder()
-                .code(401)
-                .message("Authentication failed.")
-                .build());
+        ResponseStatusWriter.writeStatusResponse(httpServletResponse,
+                                                 StatusResponseDto.builder()
+                                                         .status(ServiceStatusResponseDto.builder()
+                                                                         .code(401)
+                                                                         .message("Authentication failed.")
+                                                                         .build())
+                                                         .build());
     }
 }

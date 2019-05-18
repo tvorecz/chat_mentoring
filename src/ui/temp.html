@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Temp</title>
+    </head>
+    <body>
+        <div class="container">
+            <h3 class=" text-center">Messaging</h3>
+            <div class="messaging">
+                <div class="inbox_msg">
+                    <div class="inbox_people">
+                        <div class="headind_srch">
+                            <div class="recent_heading">
+                                <h4>Recent</h4>
+                            </div>
+                        </div>
+                        <div class="inbox_chat">
+                            <div class="chat_list active_chat">
+                                <div class="chat_people">
+                                    <div class="chat_img"><img
+                                            src="https://ptetutorials.com/images/user-profile.png"
+                                            alt="sunil"></div>
+                                    <div class="chat_ib">
+                                        <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                                        <p>Test, which is a new approach to have all solutions
+                                            astrology under one roof.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat_list">
+                                <div class="chat_people">
+                                    <div class="chat_img"><img
+                                            src="https://ptetutorials.com/images/user-profile.png"
+                                            alt="sunil"></div>
+                                    <div class="chat_ib">
+                                        <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                                        <p>Test, which is a new approach to have all solutions
+                                            astrology under one roof.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mesgs">
+                    <div class="msg_history">
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img"><img
+                                    src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test which is a new approach to have all
+                                        solutions</p>
+                                    <span class="time_date"> 11:01 AM    |    June 9</span></div>
+                            </div>
+                        </div>
+                        <div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>Test which is a new approach to have all
+                                    solutions</p>
+                                <span class="time_date"> 11:01 AM    |    June 9</span></div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img"><img
+                                    src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>Test, which is a new approach to have</p>
+                                    <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
+                            </div>
+                        </div>
+                        <div class="outgoing_msg">
+                            <div class="sent_msg">
+                                <p>Apollo University, Delhi, India Test</p>
+                                <span class="time_date"> 11:01 AM    |    Today</span></div>
+                        </div>
+                        <div class="incoming_msg">
+                            <div class="incoming_msg_img"><img
+                                    src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                            </div>
+                            <div class="received_msg">
+                                <div class="received_withd_msg">
+                                    <p>We work directly with our designers and suppliers,
+                                        and sell direct to you, which means quality, exclusive
+                                        products, at a price anyone can afford.</p>
+                                    <span class="time_date"> 11:01 AM    |    Today</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="type_msg">
+                        <div class="input_msg_write">
+                            <input type="text" class="write_msg" placeholder="Type a message" />
+                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o"
+                                                                          aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="start" class="row">
+            <label id="status">Success</label>
+            <button href="#" class="btn btn-sq-lg btn-success col-md-6" onclick="onCallLoginForm()">
+                Log In
+            </button>
+            <button href="#" class="btn btn-sq-lg btn-warning col-md-6" onclick="onCallRegisterForm()">
+                Register
+            </button>
+        </div>
+
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <div class="fadeIn first">
+                    <h3>Login</h3>
+                </div>
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+                    <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+                    <input type="button" class="fadeIn fourth" value="Log In" onclick="onLoginUser()">
+                </form>
+            </div>
+        </div>
+
+        <div class="wrapper fadeInDown">
+            <div id="formContent">
+                <div class="fadeIn first">
+                    <h3>Registration</h3>
+                </div>
+
+                <!-- Login Form -->
+                <form id="registerForm">
+                    <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+                    <input type="text" id="nickname" class="fadeIn second" name="nickname" placeholder="nickname">
+                    <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+                    <input type="button" class="fadeIn fourth" value="Register" onclick="onRegisterUser()">
+                </form>
+            </div>
+        </div>
+
+        <!--success alert-->
+        <div id="alert" class="container">
+            <div class="col-10">
+                <div class="alert alert-success text-center" role="alert">
+                </div>
+            </div>
+        </div>
+
+        <!--error alert-->
+        <div class="container">
+            <div class="col-10">
+                <div id="alert" class="alert alert-danger text-center" role="alert">
+                </div>
+            </div>
+        </div>
+
+        <!--start button-->
+        <div id="buttons" class="container">
+            <div class="row">
+                <div class="col-6">
+                    <button href="#" class="btn btn-sq-lg btn-success" onclick="onCallLoginForm()">
+                        Log In
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button href="#" class="btn btn-sq-lg btn-warning" onclick="onCallRegisterForm()">
+                        Register
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!--start container-->
+        <div id="start" class="row">
+        </div>
+
+        <!--main container-->
+        <div id="main" class="wrapper fadeInDown">
+        </div>
+    </body>
+</html>

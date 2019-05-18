@@ -1,6 +1,7 @@
 package com.epam.mentoring.security.filter;
 
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
+import com.epam.mentoring.dto.StatusResponseDto;
 import com.epam.mentoring.security.IdUsernamePasswordAuthenticationToken;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
 import com.epam.mentoring.security.ResponseStatusWriter;
@@ -67,9 +68,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter implements
     }
 
     private void writeExceptionResponse(HttpServletResponse response, int code, String message) throws IOException {
-        ResponseStatusWriter.writeStatusResponse(response, ServiceStatusResponseDto.builder()
-                .code(code)
-                .message(message)
+        ResponseStatusWriter.writeStatusResponse(response, StatusResponseDto.builder()
+                .status(ServiceStatusResponseDto.builder()
+                                .code(code)
+                                .message(message)
+                                .build())
                 .build());
     }
 }

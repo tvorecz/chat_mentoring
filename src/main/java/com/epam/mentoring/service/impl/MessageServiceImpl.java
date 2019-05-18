@@ -27,7 +27,7 @@ public class MessageServiceImpl implements MessageService {
     private Handler<MessageHistoryRequestDto, MessageHistoryResponseDto> getChatHistoryHandler;
     private Handler<MessageCreateRequestDto, MessageResponseDto> createMessageHandler;
     private Handler<MessageUpdateRequestDto, MessageResponseDto> updateMessageHandler;
-    private Handler<MessageDeleteRequestDto, ServiceStatusResponseDto> deleteMessageHandler;
+    private Handler<MessageDeleteRequestDto, StatusResponseDto> deleteMessageHandler;
 
     @Autowired
     public MessageServiceImpl(Validator validator, RepositoryStorage repositoryStorage) {
@@ -85,7 +85,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public ServiceStatusResponseDto deleteMessage(MessageDeleteRequestDto messageDeleteRequestDto) {
+    public StatusResponseDto deleteMessage(MessageDeleteRequestDto messageDeleteRequestDto) {
         return deleteMessageHandler.handle(messageDeleteRequestDto,
                                            ServiceStatusResponseDto.builder()
                                                    .build());

@@ -4,9 +4,10 @@ import com.epam.mentoring.dal.repository.MessageRepository;
 import com.epam.mentoring.dto.MessageDeleteRequestDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
+import com.epam.mentoring.dto.StatusResponseDto;
 import com.epam.mentoring.service.handler.Handler;
 
-public class DeleteMessageHandler implements Handler<MessageDeleteRequestDto, ServiceStatusResponseDto> {
+public class DeleteMessageHandler implements Handler<MessageDeleteRequestDto, StatusResponseDto> {
     private MessageRepository repository;
     private Handler nextHandler;
 
@@ -20,11 +21,13 @@ public class DeleteMessageHandler implements Handler<MessageDeleteRequestDto, Se
     }
 
     @Override
-    public ServiceStatusResponseDto handle(MessageDeleteRequestDto req, ServiceStatusResponseDto status) {
-        if(req != null && status.getCode() == 200) {
+    public StatusResponseDto handle(MessageDeleteRequestDto req, ServiceStatusResponseDto status) {
+        if (req != null && status.getCode() == 200) {
             repository.deleteById(req.getMessageId());
         }
 
-        return status;
+        return StatusResponseDto.builder()
+                .status(status)
+                .build();
     }
 }

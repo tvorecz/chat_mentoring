@@ -20,7 +20,7 @@ public class UserRegisterResponseDtoMapperHandler implements Handler<User, UserR
     public UserRegisterResponseDto handle(User req, ServiceStatusResponseDto status) {
         if(req != null) {
             Map<String, String> links = new HashMap<>();
-            links.put("login", "/secure/login");
+            links.put("login", "/user/login");
 
             return UserRegisterResponseDto.builder()
                     .status(status)

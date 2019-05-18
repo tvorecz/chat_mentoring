@@ -9,5 +9,5 @@ public interface MessageService {
 
     MessageResponseDto updateMessage(MessageUpdateRequestDto messageUpdateRequestDto);
 
-    ServiceStatusResponseDto deleteMessage(MessageDeleteRequestDto messageDeleteRequestDto);
+    StatusResponseDto deleteMessage(MessageDeleteRequestDto messageDeleteRequestDto);
 }

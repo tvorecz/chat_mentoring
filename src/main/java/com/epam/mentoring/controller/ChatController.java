@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/chat")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "x-requested-with, x-requested-by, Authorization, Origin, Content-Type")
 public class ChatController {
     private ChatService chatService;
 
@@ -31,7 +32,9 @@ public class ChatController {
 
         ChatsResponseDto allChatsForUser = chatService.findAllChatsForUser(chatsRequestDto);
 
-        return new ResponseEntity<>(allChatsForUser, HttpStatus.OK);
+        return ResponseEntity.status(allChatsForUser.getStatus().getCode()).body(allChatsForUser);
+
+//        return new ResponseEntity<>(allChatsForUser, HttpStatus.OK);
     }
 
     @PostMapping
@@ -41,7 +44,8 @@ public class ChatController {
 
         ChatInfoResponseDto createdChat = chatService.createNewChat(chatCreateRequestDto);
 
-        return new ResponseEntity<>(createdChat, HttpStatus.OK);
+        return ResponseEntity.status(createdChat.getStatus().getCode()).body(createdChat);
+//        return new ResponseEntity<>(createdChat, HttpStatus.OK);
     }
 
     @GetMapping("/{chatId}")
@@ -51,6 +55,8 @@ public class ChatController {
 
         ChatInfoResponseDto chatInfoResponseDto = chatService.getChatInfo(chatInfoRequestDto);
 
-        return new ResponseEntity<>(chatInfoResponseDto, HttpStatus.OK);
+        return ResponseEntity.status(chatInfoResponseDto.getStatus().getCode()).body(chatInfoResponseDto);
+
+//        return new ResponseEntity<>(chatInfoResponseDto, HttpStatus.OK);
     }
 }
