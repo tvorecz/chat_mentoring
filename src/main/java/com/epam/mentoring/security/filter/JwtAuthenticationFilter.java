@@ -1,7 +1,8 @@
 package com.epam.mentoring.security.filter;
 
+import com.epam.mentoring.dto.LoginResponseDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
-import com.epam.mentoring.dto.StatusResponseDto;
+import com.epam.mentoring.dto.UserResponseDto;
 import com.epam.mentoring.entity.User;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
 import com.epam.mentoring.security.ResponseStatusWriter;
@@ -55,16 +56,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.addHeader(TOKEN_HEADER, tokenBody);
 //        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
-        response.addHeader("Access-Control-Expose-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+        response.addHeader("Access-Control-Allow-Headers",
+                           "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+        response.addHeader("Access-Control-Expose-Headers",
+                           "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
 //        response.addHeader("Access-Control-Allow-Credentials", "true");
 
         ResponseStatusWriter.writeStatusResponse(response,
-                                                 StatusResponseDto.builder()
+                                                 LoginResponseDto.builder()
+                                                         .user(UserResponseDto.builder()
+                                                                       .id(user.getId())
+                                                                       .login(user.getLogin())
+                                                                       .nickname(user.getNickname())
+                                                                       .build())
                                                          .status(ServiceStatusResponseDto.builder()
                                                                          .code(200)
                                                                          .message("Ok.")
-                                                                         .build()).build());
+                                                                         .build())
+                                                         .build()
+                , 200);
     }
 
     @Override
@@ -72,16 +82,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                               HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
 //        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Access-Control-Allow-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
-        response.addHeader("Access-Control-Expose-Headers", "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+        response.addHeader("Access-Control-Allow-Headers",
+                           "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
+        response.addHeader("Access-Control-Expose-Headers",
+                           "x-requested-with, x-requested-by, Authorization, Origin, Content-Type");
 //        response.addHeader("Access-Control-Allow-Credentials", "true");
 
         ResponseStatusWriter.writeStatusResponse(response,
-                                                 StatusResponseDto.builder()
+                                                 LoginResponseDto.builder()
                                                          .status(ServiceStatusResponseDto.builder()
-                                    .code(401)
-                                    .message("Access denied.")
-                                    .build()).build());
+                                                                         .code(401)
+                                                                         .message("Access denied.")
+                                                                         .build())
+                                                         .build(),
+                                                 401);
     }
 
 

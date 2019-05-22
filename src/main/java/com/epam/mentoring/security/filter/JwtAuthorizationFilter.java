@@ -69,10 +69,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter implements
 
     private void writeExceptionResponse(HttpServletResponse response, int code, String message) throws IOException {
         ResponseStatusWriter.writeStatusResponse(response, StatusResponseDto.builder()
-                .status(ServiceStatusResponseDto.builder()
-                                .code(code)
-                                .message(message)
-                                .build())
-                .build());
+                                                         .status(ServiceStatusResponseDto.builder()
+                                                                         .code(code)
+                                                                         .message(message)
+                                                                         .build())
+                                                         .build(),
+                                                 code);
     }
 }

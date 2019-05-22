@@ -14,6 +14,9 @@
                             <div class="recent_heading">
                                 <h4>Recent</h4>
                             </div>
+                            <div class="srch_bar">
+                                <button id="newChatButton" type="button" class="btn btn-primary" onclick="onCreateNewChat">Primary</button>
+                            </div>
                         </div>
                         <div class="inbox_chat">
                             <div class="chat_list active_chat">
@@ -182,6 +185,99 @@
 
         <!--main container-->
         <div id="main" class="wrapper fadeInDown">
+        </div>
+
+        <!--incoming message-->
+        <div id="message-1" class="incoming_msg">
+            <div class="incoming_msg_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+            </div>
+            <div class="received_msg">
+                <div class="received_withd_msg">
+                    <p id="text-message-1">Test which is a new approach to have all
+                        solutions</p>
+                    <span id="info-message-1" class="time_date"> 11:01 AM | June 9</span>
+                </div>
+            </div>
+        </div>
+
+        <!--outcoming message-->
+        <div id="message-2" class="outgoing_msg">
+            <div class="sent_msg">
+                <p id="text-message-2">Test which is a new approach to have all
+                    solutions</p>
+                <span id="info-message-2" class="time_date"> 11:01 AM | June 9</span>
+            </div>
+        </div>
+
+        <!--active chat-->
+        <div id="chat-1" class="chat_list active_chat">
+            <div class="chat_people">
+                <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
+                <div class="chat_ib">
+                    <h5 id="title-chat-1">Sunil Rajput <span id="date-chat-1" class="chat_date">Dec 25</span></h5>
+                    <p id="message-chat-1">Test, which is a new approach to have all solutions astrology under one roof.</p>
+                </div>
+            </div>
+        </div>
+
+        <!--chat-->
+        <div id="chat-2" class="chat_list">
+            <div class="chat_people">
+                <div class="chat_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
+                <div class="chat_ib">
+                    <h5 id="title-chat-2">Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p id="message-chat-2">Test, which is a new approach to have all solutions astrology under one roof.</p>
+                </div>
+            </div>
+        </div>
+
+        <!--incoming message-->
+        <div id="message-_" class="incoming_msg">
+            <div class="incoming_msg_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+            </div>
+            <div class="received_msg">
+                <div class="received_withd_msg">
+                    <p id="text-message-_"></p>
+                    <span id="info-message-_" class="time_date"></span>
+                </div>
+            </div>
+        </div>
+
+        <!--outgoing message-->
+        <div id="message-_" class="outgoing_msg">
+            <div class="sent_msg">
+                <p id="text-message-_"></p>
+                <span id="info-message-_" class="time_date"></span>
+            </div>
+        </div>
+
+        <!--chat form-->
+        <div class="container">
+            <h3 class="text-center">Messaging</h3>
+            <div class="messaging">
+                <div class="inbox_people">
+                    <div class="headind_srch">
+                        <div class="recent_heading">
+                            <h4 id="nickname"></h4>
+                        </div>
+                    </div>
+                    <div id="chats" class="inbox_chat">
+
+                    </div>
+                </div>
+                <div class="mesgs">
+                    <div id="messages" class="msg_history">
+
+                    </div>
+                    <div class="type_msg">
+                        <div class="input_msg_write">
+                            <input id="new_message" type="text" class="write_msg" placeholder="Type a message" />
+                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true" onclick="onSendMessage()"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

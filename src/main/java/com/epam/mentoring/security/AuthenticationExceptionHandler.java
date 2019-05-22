@@ -22,6 +22,7 @@ public class AuthenticationExceptionHandler implements AuthenticationEntryPoint 
                                                                          .code(401)
                                                                          .message("Authentication failed.")
                                                                          .build())
-                                                         .build());
+                                                         .build()
+                , 401);
     }
 }
