@@ -1,13 +1,20 @@
 package com.epam.mentoring.service;
 
-import com.epam.mentoring.dto.*;
+import com.epam.mentoring.entity.Message;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public interface MessageService {
-    MessageHistoryResponseDto getChatHistory(MessageHistoryRequestDto messageHistoryRequestDto);
+    List<Message> getChatHistory(int chatId, LocalDateTime from);
 
-    MessageResponseDto createMessage(MessageCreateRequestDto messageCreateRequestDto);
+    List<Message> getChatHistory(int chatId, LocalDateTime from, LocalDateTime till);
 
-    MessageResponseDto updateMessage(MessageUpdateRequestDto messageUpdateRequestDto);
+    Message getById(int messageId);
 
-    StatusResponseDto deleteMessage(MessageDeleteRequestDto messageDeleteRequestDto);
+    Message createMessage(Message message);
+
+    Message updateMessage(Message message);
+
+    void deleteMessage(int messageId);
 }

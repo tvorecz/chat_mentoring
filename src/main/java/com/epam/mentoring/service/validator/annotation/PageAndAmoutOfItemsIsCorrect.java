@@ -1,6 +1,6 @@
 package com.epam.mentoring.service.validator.annotation;
 
-import com.epam.mentoring.service.validator.PageAndAmoutOfItemsIsCorrectValidator;
+import com.epam.mentoring.service.validator.handler.PageAndAmoutOfItemsIsCorrectValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

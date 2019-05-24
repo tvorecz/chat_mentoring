@@ -11,6 +11,9 @@ import java.util.Optional;
 
 
 public interface MessageRepository extends CrudRepository<Message, Integer> {
+    @Query("select message from Message message where message.chat.id = :chaId and message.dateOfCreation = (select max(m.dateOfCreation) from Message m)")
+    Message getLastMessageInChat(@Param("chaId") Integer chaId);
+
     @Query("select message from Message message where message.id = :messageId")
     Message getCreatedMessage(@Param("messageId") Integer messageId);
 

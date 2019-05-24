@@ -1,13 +1,21 @@
 package com.epam.mentoring.service;
 
-import com.epam.mentoring.dto.UserRegisterRequestDto;
-import com.epam.mentoring.dto.UserRegisterResponseDto;
-import com.epam.mentoring.dto.UsersSearchRequestDto;
-import com.epam.mentoring.dto.UsersSearchResponseDto;
+import com.epam.mentoring.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService {
-    UserRegisterResponseDto register(UserRegisterRequestDto userRegisterRequestDto);
-    UsersSearchResponseDto findUsers(UsersSearchRequestDto usersSearchRequestDto);
+    User register(User notSavedUser);
+
+    User getById(int userId);
+
+    List<User> findUsers();
+
+    List<User> findUsers(List<Integer> participantsIds);
+
+    List<User> findUsers(String filterWord);
+
+    List<User> findUsers(String filterWord, Integer amount, Integer page);
 }
 

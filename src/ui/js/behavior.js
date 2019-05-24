@@ -1,5 +1,5 @@
 // variables
-var successResponseCode = 200;
+var successResponseCode = 1;
 var tokenKey = "token";
 var currentIdChatKey = "currentChat";
 var currentUserNicknameKey = "currentNicknameUser";
@@ -193,7 +193,7 @@ function onLoginUser() {
     // console.log(uri);
     // console.log(requestData);
 
-    sendFormDataRequest(requestType, uri, requestData, completeFunction);
+    sendJsonRequest(requestType, uri, requestData, completeFunction);
 
     return false;
 }
@@ -245,7 +245,7 @@ function onSendMessage() {
 }
 
 function onPressEnter(event) {
-    if(event.keyCode === 13) {
+    if (event.keyCode === 13) {
         onSendMessage();
     }
 }
@@ -258,6 +258,7 @@ function onUpdateHistory() {
     var authHeader = window.sessionStorage.getItem(tokenKey);
 
     // console.log("Date: " + window.sessionStorage.getItem(firstMessageDateInCurrentChat));
+    console.log(uri);
 
     sendAuthJsonRequest(requestType, uri, requestData, completeFunction, authHeader);
 }
@@ -273,7 +274,7 @@ function onCreateNewChat() {
 }
 
 function onChooseUser(currentUser) {
-    if($("#" + currentUser.id).is(".active")) {
+    if ($("#" + currentUser.id).is(".active")) {
         $("#" + currentUser.id).removeClass("active");
     } else {
         $("#" + currentUser.id).addClass("active");
@@ -283,7 +284,7 @@ function onChooseUser(currentUser) {
 function onSearchUsers() {
     var filterWord = $("#filterWord").val();
 
-    if(filterWord.length > 2) {
+    if (filterWord.length > 2) {
         var requestData = null;
         var completeFunction = onUpdateUsersList;
         var requestType = "GET";
@@ -326,7 +327,10 @@ function createAndFillRegisterRequestObject() {
 }
 
 function createAndFillLoginRequestObject() {
-    var requestData = "login=" + $("#login").val() + "&" + "password=" + $("#password").val();
+    var requestData = {
+        login: $("#login").val(),
+        password: $("#password").val()
+    };
 
     return requestData;
 }
@@ -344,9 +348,9 @@ function createAndFillNewMessageRequestObject() {
 function createAndFillNewChatRequestObject() {
     var usersIds = [];
 
-    var itemsOfList = $("li .active");
+    console.log($("li").filter(".active"));
 
-    $.each(itemsOfList, function (index, value) {
+    $("li").filter(".active").each(function (index, value) {
         usersIds.push(parseInt(value.id.toString().replace("user-", "")));
     })
 
@@ -379,9 +383,9 @@ function onRegisterResponse(xmlRq) {
 }
 
 function onLoginResponse(xmlRq) {
-    // console.log(xmlRq.status);
+    console.log(xmlRq.status);
 
-    // console.log(xmlRq.responseText);
+    console.log(xmlRq.responseText);
 
     var responseJson = $.parseJSON(xmlRq.responseText);
 
@@ -399,8 +403,10 @@ function onLoginResponse(xmlRq) {
 
     onCallStartPage();
 
+    console.log(responseJson.status.code);
 
     if (responseJson.status.code == successResponseCode) {
+        console.log(responseJson.status.code);
         onSuccessfulLogin();
     } else {
         onFail(responseJson.status.message);
@@ -413,6 +419,7 @@ function onChatFromResponse(xmlRq) {
     // console.log(xmlRq.responseText);
 
     var responseJson = $.parseJSON(xmlRq.responseText);
+    console.log(responseJson.status.code);
 
     if (responseJson.status.code == successResponseCode) {
         // console.log(responseJson.chats);
@@ -425,6 +432,12 @@ function onChatFromResponse(xmlRq) {
 
         fillChatForm(responseJson.chats);
 
+    } else if(responseJson.status.code == 0) {
+        $("#main").html(chatFrom);
+
+        // console.log(window.sessionStorage.getItem(currentUserNicknameKey));
+
+        $("#nickname").html("Chats for " + window.sessionStorage.getItem(currentUserNicknameKey));
     } else {
         onFail(responseJson.status.message);
     }
@@ -468,9 +481,11 @@ function onUpdateHistoryResponse(xmlRq) {
     if (responseJson.status.code == successResponseCode) {
         var isNew = updateHistory(responseJson.history);
 
-        if(isNew) {
+        if (isNew) {
             scrollDown($("#messages"));
         }
+    } else if(responseJson.status.code == 0){
+        
     } else {
         clearInterval(window.sessionStorage.getItem(currentHistoryTimer));
 
@@ -487,7 +502,7 @@ function onUpdateUsersList(xmlRq) {
         var users = list.children(".list-group-item");
 
         $.each(users, function (index, value) {
-            if(!$("#" + value.id).is(".active")) {
+            if (!$("#" + value.id).is(".active")) {
                 $("#" + value.id).remove();
 
                 // delete $("#" + value.id);
@@ -503,20 +518,22 @@ function onUpdateUsersList(xmlRq) {
 function onCreateNewChatResponse(xmlRq) {
     var responseJson = $.parseJSON(xmlRq.responseText);
 
+    console.log(responseJson);
+
     if (responseJson.status.code == successResponseCode) {
         var chatItem = chat;
         // console.log(chatItem);
 
-        chatItem = chatItem.replace("\"chat-_\"", ("\"chat-" + responseJson.id + "\""));
-        chatItem = chatItem.replace("\"title-chat-_\"", ("\"title-chat-" + responseJson.id + "\""));
-        chatItem = chatItem.replace("\"date-chat-_\"", ("\"date-chat-" + responseJson.id + "\""));
-        chatItem = chatItem.replace("\"last-message-chat-_\"", ("\"last-message-chat-" + responseJson.id +"\""));
+        chatItem = chatItem.replace("\"chat-_\"", ("\"chat-" + responseJson.chat.id + "\""));
+        chatItem = chatItem.replace("\"title-chat-_\"", ("\"title-chat-" + responseJson.chat.id + "\""));
+        chatItem = chatItem.replace("\"date-chat-_\"", ("\"date-chat-" + responseJson.chat.id + "\""));
+        chatItem = chatItem.replace("\"last-message-chat-_\"", ("\"last-message-chat-" + responseJson.chat.id + "\""));
 
         // console.log(chatItem);
 
         $("#chats").prepend(chatItem);
 
-        $("#title-chat-" + responseJson.id).html(responseJson.title);
+        $("#title-chat-" + responseJson.chat.id).html(responseJson.chat.title);
     }
 }
 
@@ -528,14 +545,14 @@ function onFail(textStatus) {
 
 // form fillets
 function fillChatForm(chats) {
-    $.each(chats, function() {
+    $.each(chats, function () {
         var chatItem = chat;
         // console.log(chatItem);
 
         chatItem = chatItem.replace("\"chat-_\"", ("\"chat-" + this.id + "\""));
         chatItem = chatItem.replace("\"title-chat-_\"", ("\"title-chat-" + this.id + "\""));
         chatItem = chatItem.replace("\"date-chat-_\"", ("\"date-chat-" + this.id + "\""));
-        chatItem = chatItem.replace("\"last-message-chat-_\"", ("\"last-message-chat-" + this.id +"\""));
+        chatItem = chatItem.replace("\"last-message-chat-_\"", ("\"last-message-chat-" + this.id + "\""));
 
         // console.log(chatItem);
 
@@ -549,31 +566,38 @@ function fillChatForm(chats) {
 }
 
 function fillHistory(chatInfo) {
-    window.sessionStorage.setItem(currentIdChatKey, chatInfo.id);
+    console.log(chatInfo);
+    window.sessionStorage.setItem(currentIdChatKey, chatInfo.chat.id);
 
     // console.log(window.sessionStorage.getItem(currentIdChatKey));
 
     $("#messages").html("");
 
-    if(chatInfo.lastHistory != null && chatInfo.lastHistory != undefined) {
+    if (chatInfo.lastHistory != null && chatInfo.lastHistory != undefined) {
         $.each(chatInfo.lastHistory, function (index, value) {
             // console.log("Index: " + index);
 
             fillNewMessage(value);
 
-            if(index == chatInfo.lastHistory.length - 1) {
+            if (index == chatInfo.lastHistory.length - 1) {
                 window.sessionStorage.setItem(lastMessageDateInCurrentChat, value.dateTimeOfCreating);
             } else if (index == 0) {
                 window.sessionStorage.setItem(firstMessageDateInCurrentChat, value.dateTimeOfCreating);
             }
         })
+    } else {
+        var currentDate = new Date();
+
+        var currentDateString = currentDate.toISOString().replace(/\.[a-z,A-Z,0-9]*/, "");
+
+        window.sessionStorage.setItem(firstMessageDateInCurrentChat, currentDateString);
     }
 
     var timer = setInterval(updateHistoryTimer, 3000);
 
     var oldtimer = window.sessionStorage.getItem(currentHistoryTimer);
 
-    if(oldtimer != null && oldtimer != undefined) {
+    if (oldtimer != null && oldtimer != undefined) {
         clearInterval(window.sessionStorage.getItem(currentHistoryTimer));
     }
 
@@ -585,17 +609,17 @@ function updateHistory(history) {
 
     // console.log(history);
 
-    if(history != null && history != undefined) {
+    if (history != null && history != undefined) {
         $.each(history, function (index, value) {
             // console.log($("#message-" + value.id));
 
-            if($("div").is("#message-" + value.id)) {
+            if ($("div").is("#message-" + value.id)) {
                 // // console.log(value);
 
-                if(value.dateTimeOfEditing != null && value.dateTimeOfEditing != undefined) {
+                if (value.dateTimeOfEditing != null && value.dateTimeOfEditing != undefined) {
                     var oldDateTimeOfEditing = $("#info-message-" + value.id).html.toString().replace("Created ", "").replace("Edited ", "").replace((" | by " + value.author.nickname), "");
 
-                    if(oldDateTimeOfEditing != value.dateTimeOfEditing) {
+                    if (oldDateTimeOfEditing != value.dateTimeOfEditing) {
                         $("#text-message-" + value.id).html(value.text);
                         $("#info-message-" + value.id).html("Updated " + value.dateTimeOfEditing + " | by " + value.author.nickname);
                     }
@@ -605,7 +629,7 @@ function updateHistory(history) {
 
                 fillNewMessage(value);
 
-                if(index == history.length - 1) {
+                if (index == history.length - 1) {
                     window.sessionStorage.setItem(lastMessageDateInCurrentChat, value.dateTimeOfCreating);
                     isNew = true;
                 }
@@ -617,17 +641,17 @@ function updateHistory(history) {
 }
 
 function fillListOfUsers(users) {
-    if(users != null && users != undefined) {
+    if (users != null && users != undefined) {
         $.each(users, function (index, value) {
-           if(!$("li").is("#user-" + value.id)) {
-               var newElement = foundUserInList;
+            if (!$("li").is("#user-" + value.id)) {
+                var newElement = foundUserInList;
 
-               newElement = newElement.replace("\"user-_\"", ("\"user-" + value.id +"\""));
+                newElement = newElement.replace("\"user-_\"", ("\"user-" + value.id + "\""));
 
-               $("#foundUsers").append(newElement);
+                $("#foundUsers").append(newElement);
 
-               $("#user-" + value.id).html(value.nickname);
-           }
+                $("#user-" + value.id).html(value.nickname);
+            }
         });
     }
 }
@@ -649,7 +673,7 @@ function updateHistoryTimer() {
 function fillNewMessage(message) {
     var messageItem;
 
-    if(message.author.id == window.sessionStorage.getItem(currentUserIdKey)) {
+    if (message.author.id == window.sessionStorage.getItem(currentUserIdKey)) {
         messageItem = outgoingMessage;
     } else {
         messageItem = incomingMessage;
@@ -663,7 +687,7 @@ function fillNewMessage(message) {
 
     $("#text-message-" + message.id).html(message.text);
 
-    if(message.dateTimeOfEditing == null || message.dateTimeOfEditing == undefined) {
+    if (message.dateTimeOfEditing == null || message.dateTimeOfEditing == undefined) {
         // console.log(message.dateTimeOfCreating);
 
         $("#info-message-" + message.id).html("Created " + message.dateTimeOfCreating + " | by " + message.author.nickname);
@@ -682,7 +706,7 @@ function scrollDown(element) {
     element.animate({scrollTop: height}, "slow");
 }
 
-// sendind requests
+// sending requests
 function sendJsonRequest(requestType, uri, requestData, completeFunction) {
     var url = ("https://localhost:8443/" + uri);
     // console.log(url);
@@ -692,13 +716,14 @@ function sendJsonRequest(requestType, uri, requestData, completeFunction) {
     xmlRq.open(requestType, url, true);
     xmlRq.setRequestHeader("content-type", "application/json");
     xmlRq.setRequestHeader("cache-control", "no-cache");
+    // xmlRq.withCredentials = true;
     // xmlRq.setRequestHeader("Access-Control-Allow-Origin", "*");
     // xmlRq.setRequestHeader("Access-Control-Allow-Credentials", "true");
     xmlRq.onload = function (ev) {
         completeFunction(xmlRq);
     };
 
-    if(requestData == undefined || requestData == null) {
+    if (requestData == undefined || requestData == null) {
         xmlRq.send();
     } else {
         var body = JSON.stringify(requestData);
@@ -745,7 +770,7 @@ function sendAuthJsonRequest(requestType, uri, requestData, completeFunction, au
         completeFunction(xmlRq);
     };
 
-    if(requestData == undefined || requestData == null) {
+    if (requestData == undefined || requestData == null) {
         xmlRq.send();
     } else {
         var body = JSON.stringify(requestData);

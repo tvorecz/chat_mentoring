@@ -5,7 +5,6 @@ import com.epam.mentoring.service.validator.annotation.UsersExist;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter

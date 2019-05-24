@@ -1,11 +1,8 @@
 package com.epam.mentoring.dto;
 
 import com.epam.mentoring.service.validator.annotation.PageAndAmoutOfItemsIsCorrect;
-import com.epam.mentoring.service.validator.annotation.UserExists;
 import lombok.*;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 @NoArgsConstructor

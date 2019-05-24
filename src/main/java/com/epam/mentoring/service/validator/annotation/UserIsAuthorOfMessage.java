@@ -1,6 +1,6 @@
 package com.epam.mentoring.service.validator.annotation;
 
-import com.epam.mentoring.service.validator.UserIsAuthorOfMessageValidator;
+import com.epam.mentoring.service.validator.handler.UserIsAuthorOfMessageValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

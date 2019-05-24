@@ -1,6 +1,6 @@
 package com.epam.mentoring.service.validator.annotation;
 
-import com.epam.mentoring.service.validator.CorrectPairOfDatesValidator;
+import com.epam.mentoring.service.validator.handler.CorrectPairOfDatesValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

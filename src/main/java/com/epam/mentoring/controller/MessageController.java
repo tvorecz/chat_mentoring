@@ -1,7 +1,8 @@
 package com.epam.mentoring.controller;
 
 import com.epam.mentoring.dto.*;
-import com.epam.mentoring.service.MessageService;
+import com.epam.mentoring.service.MessageServiceFacade;
+import com.epam.mentoring.service.status.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/chat/{chatId}/message")
-@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "x-requested-with, x-requested-by, Authorization, Origin, Content-Type")
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "x-requested-with, x-requested-by, Authorization, Origin," +
+                                                            " Content-Type")
 public class MessageController {
-    private MessageService messageService;
+    private MessageServiceFacade messageService;
 
     @Autowired
-    public MessageController(MessageService messageService) {
+    public MessageController(MessageServiceFacade messageService) {
         this.messageService = messageService;
     }
 
@@ -26,11 +28,9 @@ public class MessageController {
 
         MessageHistoryResponseDto messageHistoryResponseDto = messageService.getChatHistory(messageHistoryRequestDto);
 
-        return ResponseEntity.status(messageHistoryResponseDto.getStatus()
-                                             .getCode())
+        return ResponseEntity.status(StatusResponse.getHttpStatusByCustomCode(messageHistoryResponseDto.getStatus()
+                                                                                      .getCode()))
                 .body(messageHistoryResponseDto);
-
-//        return new ResponseEntity<>(messageHistoryResponseDto, HttpStatus.OK);
     }
 
     @PostMapping
@@ -43,10 +43,9 @@ public class MessageController {
         MessageResponseDto messageResponseDto = messageService.createMessage(messageCreateRequestDto);
 
 
-        return ResponseEntity.status(messageResponseDto.getStatus()
-                                             .getCode())
+        return ResponseEntity.status(StatusResponse.getHttpStatusByCustomCode(messageResponseDto.getStatus()
+                                                                                      .getCode()))
                 .body(messageResponseDto);
-//        return new ResponseEntity<>(messageResponseDto, HttpStatus.OK);
     }
 
     @PutMapping("/{messageId}")
@@ -60,10 +59,9 @@ public class MessageController {
 
         MessageResponseDto messageResponseDto = messageService.updateMessage(messageUpdateRequestDto);
 
-        return ResponseEntity.status(messageResponseDto.getStatus()
-                                             .getCode())
+        return ResponseEntity.status(StatusResponse.getHttpStatusByCustomCode(messageResponseDto.getStatus()
+                                                                                      .getCode()))
                 .body(messageResponseDto);
-//        return new ResponseEntity<>(messageResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{messageId}")
@@ -78,9 +76,8 @@ public class MessageController {
 
         StatusResponseDto statusResponseDto = messageService.deleteMessage(messageDeleteRequestDto);
 
-        return ResponseEntity.status(statusResponseDto.getStatus()
-                                             .getCode())
+        return ResponseEntity.status(StatusResponse.getHttpStatusByCustomCode(statusResponseDto.getStatus()
+                                                                                      .getCode()))
                 .body(statusResponseDto);
-//        return new ResponseEntity<>(serviceStatusResponseDto, HttpStatus.OK);
     }
 }

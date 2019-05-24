@@ -1,6 +1,6 @@
 package com.epam.mentoring.service.validator.annotation;
 
-import com.epam.mentoring.service.validator.LoginNotExistsValidator;
+import com.epam.mentoring.service.validator.handler.LoginNotExistsValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

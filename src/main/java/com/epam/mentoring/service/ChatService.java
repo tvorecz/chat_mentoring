@@ -1,12 +1,13 @@
 package com.epam.mentoring.service;
 
-import com.epam.mentoring.dto.*;
+import com.epam.mentoring.entity.Chat;
+
+import java.util.List;
 
 public interface ChatService {
-    ChatsResponseDto findAllChatsForUser(ChatsRequestDto chatsRequestDto);
+    List<Chat> findAllChatsForUser(int userId);
 
-    ChatInfoResponseDto createNewChat(ChatCreateRequestDto chatCreateRequestDto);
+    Chat createNewChat(Chat chat);
 
-    ChatInfoResponseDto getChatInfo(ChatInfoRequestDto chatInfoRequestDto);
-
+    Chat getChatInfo(int chatId);
 }

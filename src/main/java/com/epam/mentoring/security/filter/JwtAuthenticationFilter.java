@@ -2,11 +2,16 @@ package com.epam.mentoring.security.filter;
 
 import com.epam.mentoring.dto.LoginResponseDto;
 import com.epam.mentoring.dto.ServiceStatusResponseDto;
+import com.epam.mentoring.dto.UserAuthenticateRequestDto;
 import com.epam.mentoring.dto.UserResponseDto;
 import com.epam.mentoring.entity.User;
 import com.epam.mentoring.security.JwtTokenHeaderBuilder;
 import com.epam.mentoring.security.ResponseStatusWriter;
 import com.epam.mentoring.security.SecurityDefinition;
+import com.epam.mentoring.service.status.StatusResponse;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,14 +40,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws
                                                                                                           AuthenticationException {
+        try {
+            String raw = request.getReader().readLine();
+            ObjectMapper objectMapper = new ObjectMapper();
 
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
+            UserAuthenticateRequestDto requestDto = objectMapper.readValue(raw, UserAuthenticateRequestDto.class);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login,
-                                                                                                          password);
+            String login = requestDto.getLogin();
+            String password = requestDto.getPassword();
 
-        return authenticationManager.authenticate(authenticationToken);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(login, password);
+
+            return authenticationManager.authenticate(authenticationToken);
+        } catch (IOException e) {
+            return authenticationManager.authenticate(null);
+        }
     }
 
     @Override
@@ -70,11 +82,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                                                        .nickname(user.getNickname())
                                                                        .build())
                                                          .status(ServiceStatusResponseDto.builder()
-                                                                         .code(200)
-                                                                         .message("Ok.")
+                                                                         .code(StatusResponse.SUCCESS.getCode())
+                                                                         .message("Success.")
                                                                          .build())
                                                          .build()
-                , 200);
+                , StatusResponse.SUCCESS.getHttpStatus());
     }
 
     @Override
@@ -91,11 +103,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ResponseStatusWriter.writeStatusResponse(response,
                                                  LoginResponseDto.builder()
                                                          .status(ServiceStatusResponseDto.builder()
-                                                                         .code(401)
+                                                                         .code(StatusResponse.UNAUTHORIZED.getCode())
                                                                          .message("Access denied.")
                                                                          .build())
                                                          .build(),
-                                                 401);
+                                                 StatusResponse.UNAUTHORIZED.getHttpStatus());
     }
 
 

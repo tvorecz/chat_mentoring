@@ -3,8 +3,6 @@ package com.epam.mentoring.dto;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @Getter
@@ -16,6 +14,6 @@ import java.util.Map;
 public class UserRegisterResponseDto implements Serializable {
     private static final long serialVersionUID = 6916496818356518807L;
 
+    private UserResponseDto user;
     private ServiceStatusResponseDto status;
-    private Map<String, String> links;
 }
