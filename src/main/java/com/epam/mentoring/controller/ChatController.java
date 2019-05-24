@@ -1,8 +1,6 @@
 package com.epam.mentoring.controller;
 
 import com.epam.mentoring.dto.*;
-import com.epam.mentoring.dto.ChatCreateRequestDto;
-import com.epam.mentoring.dto.ChatInfoResponseDto;
 import com.epam.mentoring.service.ChatServiceFacade;
 import com.epam.mentoring.service.status.StatusResponse;
 import org.springframework.beans.factory.annotation.Autowired;

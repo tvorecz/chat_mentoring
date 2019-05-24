@@ -485,7 +485,7 @@ function onUpdateHistoryResponse(xmlRq) {
             scrollDown($("#messages"));
         }
     } else if(responseJson.status.code == 0){
-        
+
     } else {
         clearInterval(window.sessionStorage.getItem(currentHistoryTimer));
 

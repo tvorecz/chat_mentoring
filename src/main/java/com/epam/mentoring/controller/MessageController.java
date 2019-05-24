@@ -3,6 +3,8 @@ package com.epam.mentoring.controller;
 import com.epam.mentoring.dto.*;
 import com.epam.mentoring.service.MessageServiceFacade;
 import com.epam.mentoring.service.status.StatusResponse;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,11 @@ public class MessageController {
     }
 
     @GetMapping
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chatId", value = "Chat's id", required = true, dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "from", value = "Start date including", required = false, dataType = "date", paramType = "query"),
+            @ApiImplicitParam(name = "till", value = "End date excluding", required = false, dataType = "date", paramType = "query")
+    })
     public ResponseEntity<MessageHistoryResponseDto> getChatHistory(HttpServletRequest request,
                                                                     MessageHistoryRequestDto messageHistoryRequestDto) {
         messageHistoryRequestDto.setUserId((Integer) request.getAttribute("userId"));
@@ -34,6 +41,10 @@ public class MessageController {
     }
 
     @PostMapping
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chatId", value = "Chat's id", required = true, dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "text", value = "Text of message", required = true, dataType = "string", paramType = "query")
+    })
     public ResponseEntity<MessageResponseDto> createMessage(HttpServletRequest request,
                                                             @PathVariable("chatId") Integer chatId,
                                                             @RequestBody MessageCreateRequestDto messageCreateRequestDto) {
@@ -49,6 +60,10 @@ public class MessageController {
     }
 
     @PutMapping("/{messageId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chatId", value = "Chat's id", required = true, dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "text", value = "Text for update", required = true, dataType = "string", paramType = "query")
+    })
     public ResponseEntity<MessageResponseDto> updateMessage(HttpServletRequest request,
                                                             @PathVariable("chatId") Integer chatId,
                                                             @PathVariable("messageId") Integer messageId,
@@ -65,6 +80,9 @@ public class MessageController {
     }
 
     @DeleteMapping("/{messageId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "chatId", value = "Chat's id", required = true, dataType = "integer", paramType = "query")
+    })
     public ResponseEntity<StatusResponseDto> deleteMessage(HttpServletRequest request,
                                                            @PathVariable("chatId") Integer chatId,
                                                            @PathVariable("messageId") Integer messageId) {
